@@ -1,6 +1,15 @@
 const express = require("express");
+const path = require("path");
+const cors = require("cors");
 
 const app = express();
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET,POST,PUT,DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 require("dotenv").config(); // load env variables into process.env
 
 /**
@@ -9,6 +18,12 @@ require("dotenv").config(); // load env variables into process.env
  * what it does is, it reads the .env file and populates the process.env object
  */
 
+const clientBuildPath = path.join(__dirname, "../client/build");
+console.log(clientBuildPath);
+app.use(express.static(clientBuildPath));
+// app.get("*", (req, res)=>{
+//   res.sendFile(path.join(clientBuildPath, "index.html"));
+// })
 const connectDB = require("./config/db");
 /**
  * diff between import and require
